@@ -93,6 +93,10 @@
 	border: none;
 }
 
+.chat__footer > form > input:focus {
+	outline: 2px blue solid;
+}
+
 .chat__footer > form > button {
 	display: none;
 }
