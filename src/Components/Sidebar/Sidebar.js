@@ -7,8 +7,18 @@ import {
 	SearchOutlined,
 } from "@mui/icons-material";
 import SidebarChat from "../SidebarChat/SidebarChat";
+import { useState, useEffect } from "react";
+import db from "../../firebase";
 
 const Sidebar = () => {
+	const [rooms, setRooms] = useState([]);
+
+	useEffect(() => {
+		db.collection("rooms").onSnapshot((snapshot) =>
+			setRooms(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
+		);
+	}, []);
+
 	return (
 		<div className="sidebar">
 			<div className="sidebar__header">
@@ -38,6 +48,7 @@ const Sidebar = () => {
 			<div className="sidebar__chats">
 				<SidebarChat addNewChat />
 				<SidebarChat />
+				{/* <SidebarChat />
 				<SidebarChat />
 				<SidebarChat />
 				<SidebarChat />
@@ -45,8 +56,7 @@ const Sidebar = () => {
 				<SidebarChat />
 				<SidebarChat />
 				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
+				<SidebarChat /> */}
 			</div>
 		</div>
 	);
