@@ -8,15 +8,22 @@ import {
 } from "@mui/icons-material";
 import SidebarChat from "../SidebarChat/SidebarChat";
 import { useState, useEffect } from "react";
-// import db from "../../firebase";
+import db from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 const Sidebar = () => {
 	const [rooms, setRooms] = useState([]);
 
 	useEffect(() => {
-		// db.collection("rooms").onSnapshot((snapshot) =>
-		// 	setRooms(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
-		// );
+		const fetchRooms = async () => {
+			const rooms = [];
+			const roomCollection = await getDocs(collection(db, "rooms"));
+			roomCollection.forEach((doc) => {
+				rooms.push({ id: doc.id, data: doc.data() });
+			});
+			setRooms(rooms);
+		};
+		fetchRooms();
 	}, []);
 
 	return (
@@ -47,16 +54,9 @@ const Sidebar = () => {
 
 			<div className="sidebar__chats">
 				<SidebarChat addNewChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
-				<SidebarChat />
+				{rooms.map((room, index) => (
+					<SidebarChat key={index} name={room.data.name} id={room.id} />
+				))}
 			</div>
 		</div>
 	);
