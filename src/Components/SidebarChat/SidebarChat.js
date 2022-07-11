@@ -1,6 +1,8 @@
 import "./SidebarChat.css";
 import { Avatar } from "@mui/material";
 import { useEffect, useState } from "react";
+import { addDoc, collection } from "firebase/firestore";
+import db from "./../../firebase";
 
 const SidebarChat = ({ addNewChat, id, name }) => {
 	const [seed, setSeed] = useState("");
@@ -13,7 +15,13 @@ const SidebarChat = ({ addNewChat, id, name }) => {
 		const roomName = prompt("Please enter name for chat");
 
 		if (roomName) {
-			//do some database stuff
+			try {
+				addDoc(collection(db, "rooms"), {
+					name: roomName,
+				});
+			} catch (error) {
+				console.error("Error adding document: ", error);
+			}
 		}
 	};
 

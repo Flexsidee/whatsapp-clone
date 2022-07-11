@@ -9,21 +9,25 @@ import {
 import SidebarChat from "../SidebarChat/SidebarChat";
 import { useState, useEffect } from "react";
 import db from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 const Sidebar = () => {
 	const [rooms, setRooms] = useState([]);
 
 	useEffect(() => {
-		const fetchRooms = async () => {
+		const roomCollection = collection(db, "rooms");
+
+		const fetchRooms = onSnapshot(roomCollection, (collectionSnapshot) => {
 			const rooms = [];
-			const roomCollection = await getDocs(collection(db, "rooms"));
-			roomCollection.forEach((doc) => {
+			collectionSnapshot.forEach((doc) => {
 				rooms.push({ id: doc.id, data: doc.data() });
 			});
 			setRooms(rooms);
+		});
+
+		return () => {
+			fetchRooms();
 		};
-		fetchRooms();
 	}, []);
 
 	return (
