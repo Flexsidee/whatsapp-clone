@@ -105,3 +105,9 @@
 	padding: 10px;
 	color: gray;
 }
+
+@media screen and (max-width: 650px) {
+	.chat {
+		min-width: 500px;
+	}
+}
