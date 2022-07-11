@@ -8,14 +8,28 @@ import {
 	MoreVert,
 	SearchOutlined,
 } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+import { doc, onSnapshot } from "firebase/firestore";
+import db from "./../../firebase";
 
 const Chat = () => {
+	let { roomId } = useParams();
 	const [seed, setSeed] = useState("");
 	const [message, setMessage] = useState("");
+	const [roomName, setRoomName] = useState("");
+
+	useEffect(() => {
+		if (roomId) {
+			const roomRef = doc(db, "rooms", roomId);
+			onSnapshot(roomRef, (chat) => setRoomName(chat.data().name));
+		}
+
+		return () => {};
+	}, [roomId]);
 
 	useEffect(() => {
 		setSeed(Math.floor(Math.random() * 5000));
-	}, []);
+	}, [roomId]);
 
 	const sendMessage = (e) => {
 		e.preventDefault();
@@ -29,7 +43,7 @@ const Chat = () => {
 				<Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
 
 				<div className="chat__headerInfo">
-					<h3>Room name</h3>
+					<h3>{roomName}</h3>
 					<p>Last seen at ...</p>
 				</div>
 
