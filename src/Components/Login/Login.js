@@ -1,18 +1,10 @@
 import "./Login.css";
 import { Button } from "@mui/material";
-import { auth, provider } from "../../firebase";
-// import { signInWithPopup } from "firebase/auth";
+import { auth, provider, signInWithGoogle } from "../../firebase";
 
 const Login = () => {
 	const signIn = () => {
-		auth
-			.signInWithPopUp(provider)
-			.then((result) => console.log(result))
-			.catch((error) => alert(error.message));
-
-		// signInWithPopup(auth, provider).then(result =>{
-		//     dispatch({type: ActionTypes.})
-		// })
+		signInWithGoogle();
 	};
 
 	return (
