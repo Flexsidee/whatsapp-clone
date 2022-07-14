@@ -10,9 +10,11 @@ import SidebarChat from "../SidebarChat/SidebarChat";
 import { useState, useEffect } from "react";
 import db from "../../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import { useStateValue } from "./../../StateProvider";
 
 const Sidebar = () => {
 	const [rooms, setRooms] = useState([]);
+	const [{ user }, dispatch] = useStateValue();
 
 	useEffect(() => {
 		const roomCollection = collection(db, "rooms");
@@ -33,7 +35,7 @@ const Sidebar = () => {
 	return (
 		<div className="sidebar">
 			<div className="sidebar__header">
-				<Avatar />
+				<Avatar src={user?.photoURL} />
 				<div className="sidebar__headerRight">
 					<IconButton>
 						<DonutLarge />

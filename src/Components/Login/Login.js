@@ -1,10 +1,23 @@
 import "./Login.css";
 import { Button } from "@mui/material";
-import { auth, provider, signInWithGoogle } from "../../firebase";
+import { signInWithGoogle } from "../../firebase";
+import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../reducer";
 
 const Login = () => {
+	const [{}, dispatch] = useStateValue();
+
 	const signIn = () => {
-		signInWithGoogle();
+		signInWithGoogle()
+			.then((result) => {
+				dispatch({
+					type: actionTypes.SET_USER,
+					user: result.user,
+				});
+			})
+			.catch((error) => {
+				alert(error);
+			});
 	};
 
 	return (

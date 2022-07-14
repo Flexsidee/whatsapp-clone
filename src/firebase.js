@@ -24,15 +24,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-const signInWithGoogle = () => {
-	signInWithPopup(auth, provider)
-		.then((result) => {
-			console.log(result);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
+const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 export { auth, provider, signInWithGoogle };
 export default db;
